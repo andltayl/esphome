@@ -289,7 +289,6 @@ uint32_t ESP32TouchComponent::component_touch_pad_read(touch_pad_t tp) {
 
 void ESP32TouchComponent::loop() {
   const uint32_t now = millis();
-  ESP_LOGD(TAG, "Test");
   bool should_print = this->setup_mode_ && now - this->setup_mode_last_log_print_ > 250;
   for (auto *child : this->children_) {
     child->value_ = this->component_touch_pad_read(child->get_touch_pad());
@@ -312,7 +311,7 @@ void ESP32TouchComponent::loop() {
 #endif
 
     if (should_print) {
-      ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32 " | Calibrated Value: %" PRIu32 " | Delta: %" PRIu32,
+      ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32 " | Calibrated Value: %" PRIu32 " | Delta: %s",
                child->get_name().c_str(), (uint32_t) child->get_touch_pad(), child->value_, historical_calibrated_value,
                delta);
     }
