@@ -315,7 +315,7 @@ void ESP32TouchComponent::loop() {
 
     if (should_print) {
       ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32, child->get_name().c_str(),
-               (uint32_t) child->get_touch_pad(), child->value_, historical_calibrated_value, delta);
+               (uint32_t) child->get_touch_pad(), child->value_);
       ESP_LOGD(TAG, "Calibrated Value: %" PRIu32 " | Delta: %" PRIu32, historical_calibrated_value, delta);
     }
 
