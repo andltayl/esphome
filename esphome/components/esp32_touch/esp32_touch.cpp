@@ -308,6 +308,7 @@ void ESP32TouchComponent::loop() {
     child->publish_state(delta > child->get_threshold());
 #else
     child->publish_state(delta > child->get_threshold());
+    ESP_LOGD(TAG, "Delta: %d , Threshold: %d", delta, child->get_threshold());
 #endif
 
     if (should_print) {
