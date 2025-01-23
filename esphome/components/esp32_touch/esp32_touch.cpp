@@ -295,11 +295,11 @@ void ESP32TouchComponent::loop() {
 
     int delta{0};
     uint32_t total{0};
-    for (int8_t i = 0; i < 10; i++) {
+    for (int8_t i = 0; i < 100; i++) {
       total += historical_values[i];
     }
 
-    historical_calibrated_value = total / 10;
+    historical_calibrated_value = total / 100;
     historical_values[historical_idx] = child->value_;
 
     delta = historical_calibrated_value - child->value_;
@@ -320,7 +320,7 @@ void ESP32TouchComponent::loop() {
   }
 
   historical_idx++;
-  if (historical_idx > 9) {
+  if (historical_idx > 99) {
     historical_idx = 0;
   }
   if (should_print) {
