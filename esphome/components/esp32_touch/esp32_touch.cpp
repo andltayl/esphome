@@ -305,15 +305,15 @@ void ESP32TouchComponent::loop() {
     delta = historical_calibrated_value - child->value_;
 
 #if !(defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3))
-    // child->publish_state(delta > child->get_threshold());
+    child->publish_state(delta > child->get_threshold());
 #else
-    // child->publish_state(delta > child->get_threshold());
+    child->publish_state(delta > child->get_threshold());
 #endif
 
     if (should_print) {
-      ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32 " | Calibrated Value: %" PRIu32 " | Delta: %d",
+      ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32 " | Calibrated Value: %" PRIu32 " | Delta: %d (%d)",
                child->get_name().c_str(), (uint32_t) child->get_touch_pad(), child->value_, historical_calibrated_value,
-               delta);
+               delta, child->get_threshold());
     }
 
     App.feed_wdt();
