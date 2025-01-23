@@ -294,16 +294,13 @@ void ESP32TouchComponent::loop() {
     child->value_ = this->component_touch_pad_read(child->get_touch_pad());
 
     int delta{0};
-
-    if (now - this->setup_mode_last_log_print_ > 250) {
-      uint32_t total{0};
-      for (int8_t i = 0; i < 10; i++) {
-        total += historical_values[i];
-      }
-
-      historical_calibrated_value = total / 10;
-      historical_values[historical_idx] = child->value_;
+    uint32_t total{0};
+    for (int8_t i = 0; i < 10; i++) {
+      total += historical_values[i];
     }
+
+    historical_calibrated_value = total / 10;
+    historical_values[historical_idx] = child->value_;
 
     delta = historical_calibrated_value - child->value_;
 
@@ -320,6 +317,11 @@ void ESP32TouchComponent::loop() {
     }
 
     App.feed_wdt();
+  }
+
+  historical_idx++;
+  if (historical_idx > 9) {
+    historical_idx = 0;
   }
 
   this->setup_mode_last_log_print_ = now;
