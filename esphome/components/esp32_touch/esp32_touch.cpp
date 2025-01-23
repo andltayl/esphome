@@ -305,10 +305,10 @@ void ESP32TouchComponent::loop() {
     delta = historical_calibrated_value - child->value_;
 
 #if !(defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3))
-    child->publish_state(delta > child->get_threshold());
+    child->publish_state(delta > (int) child->get_threshold());
     ESP_LOGD(TAG, "Delta: %d , Threshold: %d", delta, child->get_threshold());
 #else
-    child->publish_state(delta > child->get_threshold());
+    child->publish_state(delta > (int) child->get_threshold());
     ESP_LOGD(TAG, "Delta: %d , Threshold: %d", delta, child->get_threshold());
 #endif
 
