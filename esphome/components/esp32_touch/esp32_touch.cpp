@@ -292,15 +292,31 @@ void ESP32TouchComponent::loop() {
   bool should_print = this->setup_mode_ && now - this->setup_mode_last_log_print_ > 250;
   for (auto *child : this->children_) {
     child->value_ = this->component_touch_pad_read(child->get_touch_pad());
+
+    uint32_t total{0};
+
+    for (int8_t i = 0; i < 10; i++) {
+      total += historical_values[i];
+    }
+
+    historical_calibrated_value = total / 10;
+
+    int delta{0};
+
+    delta = historical_calibrated_value - child->value_;
+
+    historical_values[historical_idx] = child->value_;
+
 #if !(defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3))
-    child->publish_state(child->value_ < child->get_threshold());
+    child->publish_state(delta > child->get_threshold());
 #else
-    child->publish_state(child->value_ > child->get_threshold());
+    child->publish_state(delta > child->get_threshold());
 #endif
 
     if (should_print) {
-      ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32, child->get_name().c_str(),
-               (uint32_t) child->get_touch_pad(), child->value_);
+      ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): % | Calibrated Value: %" PRIu32 " | Delta: %" PRIu32,
+               child->get_name().c_str(), (uint32_t) child->get_touch_pad(), child->value_, historical_calibrated_value,
+               delta);
     }
 
     App.feed_wdt();

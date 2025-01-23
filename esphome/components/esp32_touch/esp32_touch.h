@@ -81,6 +81,9 @@ class ESP32TouchComponent : public Component {
   touch_low_volt_t low_voltage_reference_{TOUCH_LVOLT_0V5};
   touch_high_volt_t high_voltage_reference_{TOUCH_HVOLT_2V7};
   touch_volt_atten_t voltage_attenuation_{TOUCH_HVOLT_ATTEN_0V};
+  uint32_t historical_values[10]{0};
+  uint32_t historical_idx{0};
+  uint32_t historical_calibrated_value{0};
 #if defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3)
   touch_filter_mode_t filter_mode_{TOUCH_PAD_FILTER_MAX};
   uint32_t debounce_count_{0};
