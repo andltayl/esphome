@@ -312,11 +312,9 @@ void ESP32TouchComponent::loop() {
 #endif
 
     if (should_print) {
-      ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32, child->get_name().c_str(),
-               (uint32_t) child->get_touch_pad(), child->value_);
-      /*ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32 " | Calibrated Value: %" PRIu32 " | Delta: %" PRIu32,
+      ESP_LOGD(TAG, "Touch Pad '%s' (T%" PRIu32 "): %" PRIu32 " | Calibrated Value: %" PRIu32 " | Delta: %" PRIu32,
                child->get_name().c_str(), (uint32_t) child->get_touch_pad(), child->value_, historical_calibrated_value,
-               delta);*/
+               delta);
     }
 
     App.feed_wdt();
@@ -326,8 +324,9 @@ void ESP32TouchComponent::loop() {
   if (historical_idx > 9) {
     historical_idx = 0;
   }
-
-  this->setup_mode_last_log_print_ = now;
+  if (should_print) {
+    this->setup_mode_last_log_print_ = now;
+  }
 }
 
 void ESP32TouchComponent::on_shutdown() {
